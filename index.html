@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Burger Constructor on Proto</title>
+  </head>
+  <body>
+    <script>
+      function Burger(arr) {
+        this.title = arr[0];
+        this.size = arr[1];
+        this.calories = arr[2];
+        this.price = arr[3];
+      }
+      Burger.prototype.addTopping = function(item) {
+        this.title += " + " + item[0];
+        this.calories += item[1];
+        this.price += item[2];
+      };
+      Burger.prototype.calculateCalories = function() {
+        return this.calories;
+      };
+      Burger.prototype.calculatePrice = function() {
+        return this.price;
+      };
+
+      function Cheeseburger(anotherArr) {
+        Burger.call(this, anotherArr);
+      }
+
+      Cheeseburger.prototype = Object.create(Burger.prototype);
+
+      Burger.SIZE_SMALL = ["Hamburger", "Small", 290, 10];
+      Burger.SIZE_BIG = ["Hamburger", "Big", 350, 20];
+      Cheeseburger.SIZER_SMALL = ["Cheeseburger", "Small", 305, 15];
+      Cheeseburger.SIZE_BIG = ["Cheeseburger", "Big", 360, 25];
+      Cheeseburger.DOUBLE_CHEESE = ["Double Cheese", 10, 4];
+      Burger.TOPPING_MAYO = ["Mayo", 15, 2];
+      Burger.TOPPING_SAUCE = ["Sauce", 25, 3];
+
+      let hamburger = new Burger(Burger.SIZE_SMALL);
+      hamburger.addTopping(Burger.TOPPING_MAYO);
+
+      console.log(hamburger);
+      console.log("Calories: " + hamburger.calculateCalories());
+      console.log("Price: " + hamburger.calculatePrice() + "$");
+
+      hamburger.addTopping(Burger.TOPPING_SAUCE);
+      console.log("Price with sauce: " + hamburger.calculatePrice() + "$");
+      console.log(hamburger);
+
+      // Cheeseburger
+
+      let cheeseburger = new Cheeseburger(Cheeseburger.SIZE_BIG);
+      cheeseburger.addTopping(Burger.TOPPING_SAUCE);
+      console.log(cheeseburger);
+      console.log("Calories: " + cheeseburger.calculateCalories());
+      console.log("Price: " + cheeseburger.calculatePrice() + "$");
+
+      cheeseburger.addTopping(Cheeseburger.DOUBLE_CHEESE);
+      console.log("Price with Adds: " + cheeseburger.calculatePrice() + "$");
+      console.log(cheeseburger);
+    </script>
+  </body>
+</html>
